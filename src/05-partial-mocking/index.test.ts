@@ -1,5 +1,4 @@
-// Assuming the file path is correct, adjust as necessary for your project structure
-import * as module from './index';
+import * as functions from './index';
 
 jest.mock('./index', () => {
   const originalModule = jest.requireActual('./index');
@@ -21,9 +20,9 @@ describe('partial mocking', () => {
     const consoleSpy = jest.spyOn(console, 'log');
 
     // Call the mocked functions
-    module.mockOne();
-    module.mockTwo();
-    module.mockThree();
+    functions.mockOne();
+    functions.mockTwo();
+    functions.mockThree();
 
     // Verify console.log was not called
     expect(consoleSpy).not.toHaveBeenCalled();
@@ -37,7 +36,7 @@ describe('partial mocking', () => {
     const consoleSpy = jest.spyOn(console, 'log');
 
     // Call the unmocked function
-    module.unmockedFunction();
+    functions.unmockedFunction();
 
     // Verify console.log was called with the expected message
     expect(consoleSpy).toHaveBeenCalledWith('I am not mocked');
