@@ -1,7 +1,7 @@
-// Uncomment the code below and write your tests
-// import { readFileAsynchronously, doStuffByTimeout, doStuffByInterval } from '.';
+import { doStuffByTimeout, doStuffByInterval } from './index';
 
 describe('doStuffByTimeout', () => {
+  // Use fake timers for all tests in this describe block
   beforeAll(() => {
     jest.useFakeTimers();
   });
@@ -10,16 +10,23 @@ describe('doStuffByTimeout', () => {
     jest.useRealTimers();
   });
 
-  test('should set timeout with provided callback and timeout', () => {
-    // Write your test here
-  });
+  test('callback is called after specified timeout', () => {
+    const callback = jest.fn();
+    doStuffByTimeout(callback, 1000);
 
-  test('should call callback only after timeout', () => {
-    // Write your test here
+    // At this point, the callback should not have been called
+    expect(callback).not.toHaveBeenCalled();
+
+    // Fast-forward until all timers have been executed
+    jest.runAllTimers();
+
+    // Now, the callback should have been called
+    expect(callback).toHaveBeenCalled();
   });
 });
 
 describe('doStuffByInterval', () => {
+  // Use fake timers for all tests in this describe block
   beforeAll(() => {
     jest.useFakeTimers();
   });
@@ -28,25 +35,14 @@ describe('doStuffByInterval', () => {
     jest.useRealTimers();
   });
 
-  test('should set interval with provided callback and timeout', () => {
-    // Write your test here
-  });
+  test('callback is called multiple times after multiple intervals', () => {
+    const callback = jest.fn();
+    doStuffByInterval(callback, 1000);
 
-  test('should call callback multiple times after multiple intervals', () => {
-    // Write your test here
-  });
-});
+    // Fast-forward time by 3000ms
+    jest.advanceTimersByTime(3000);
 
-describe('readFileAsynchronously', () => {
-  test('should call join with pathToFile', async () => {
-    // Write your test here
-  });
-
-  test('should return null if file does not exist', async () => {
-    // Write your test here
-  });
-
-  test('should return file content if file exists', async () => {
-    // Write your test here
+    // Expect the callback to have been called three times
+    expect(callback).toHaveBeenCalledTimes(3);
   });
 });
